@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diaz + Lujan Baby Shower - Event Photo Hub</title>
+    <title>Arely's Baby Shower - Event Photo Hub</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,16 +11,16 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- QRCode JS Library -->
+    <!-- QRCode.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Canvas-Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -28,25 +28,24 @@
                 extend: {
                     colors: {
                         botanical: {
-                            50: '#f4f7f2',
-                            100: '#e5ece0',
-                            200: '#cbdac3',
-                            300: '#a7c19c',
-                            400: '#7fA272',
-                            500: '#5c834f',
-                            600: '#47683d',
-                            700: '#395332',
-                            800: '#2f432a',
-                            900: '#283824',
-                            darkGreen: '#2D4A1E',
-                            sage: '#6B8E23',
-                            olive: '#4A6B32',
-                            cream: '#FAFAF5',
-                            borderGold: '#a8986c'
+                            50: '#f6f8f4',
+                            100: '#e8efe2',
+                            200: '#d1dec7',
+                            300: '#adc4a1',
+                            400: '#83a473',
+                            500: '#5c7844', // Primary Olive/Sage Green
+                            600: '#486134',
+                            700: '#3b5228', // Dark Forest Green
+                            800: '#2f4021',
+                            900: '#27361c',
+                            gold: '#9a8b4f',
+                            cream: '#fbf9f3',
+                            warmBg: '#f4f0e6'
                         }
                     },
                     fontFamily: {
                         script: ['Great Vibes', 'Dancing Script', 'cursive'],
+                        headerScript: ['Dancing Script', 'cursive'],
                         serif: ['Playfair Display', 'serif'],
                         sans: ['Plus Jakarta Sans', 'sans-serif']
                     }
@@ -57,96 +56,99 @@
 
     <style>
         body {
-            background-color: #f5f6f1;
-            background-image: radial-gradient(#dce5d6 1px, transparent 1px);
+            background-color: #f4f0e6;
+            background-image: radial-gradient(#d5cebe 1.2px, transparent 1.2px);
             background-size: 24px 24px;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #2d3748;
+            color: #2f3e2e;
         }
 
-        .font-cursive {
-            font-family: 'Great Vibes', cursive;
-        }
-
-        .font-header-script {
-            font-family: 'Dancing Script', cursive;
-        }
-
-        /* Botanical Frame border style */
         .botanical-card {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid #a8986c;
-            outline: 1px solid #4A6B32;
+            background: rgba(251, 249, 243, 0.96);
+            border: 2px solid #9a8b4f;
+            outline: 1px solid #3b5228;
             outline-offset: -6px;
-            box-shadow: 0 10px 30px -5px rgba(45, 74, 30, 0.15);
+            box-shadow: 0 12px 32px -6px rgba(47, 64, 33, 0.15);
         }
 
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #a7c19c;
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #5c834f;
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f4f0e6; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #adc4a1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #5c7844; }
 
-        /* Photo Card Hover Effect */
         .photo-card {
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
         }
         .photo-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 24px -6px rgba(45, 74, 30, 0.2);
+            box-shadow: 0 14px 28px -6px rgba(47, 64, 33, 0.22);
         }
 
-        .pulse-subtle {
-            animation: pulse 3s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.85; }
+        /* Printable Flyer styling */
+        @media print {
+            body * { visibility: hidden; }
+            #printableFlyerSection, #printableFlyerSection * { visibility: visible; }
+            #printableFlyerSection {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: white;
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+                margin: 0;
+            }
+            .no-print { display: none !important; }
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-botanical-200">
 
-    <!-- Header Banner / Invite Card Section -->
-    <header class="w-full max-w-4xl mx-auto px-4 pt-6 pb-2">
-        <div class="botanical-card relative rounded-2xl p-6 md:p-10 text-center overflow-hidden my-2">
+    <!-- Header Banner / Invitation Card -->
+    <header class="w-full max-w-4xl mx-auto px-4 pt-6 pb-2 no-print">
+        <div class="botanical-card relative rounded-3xl p-6 md:p-10 text-center overflow-hidden my-2">
             
-            <!-- Corner Botanical Accents -->
+            <!-- Botanical Leaf SVGs -->
             <div class="absolute -top-6 -left-6 opacity-80 pointer-events-none select-none text-botanical-600">
                 <svg width="120" height="120" viewBox="0 0 100 100" fill="currentColor">
                     <path d="M10,90 Q30,40 80,10 Q50,50 10,90 Z" opacity="0.6"/>
                     <path d="M10,90 Q40,30 90,20 Q40,60 10,90 Z" opacity="0.3"/>
-                    <circle cx="25" cy="75" r="4" fill="#6B8E23"/>
-                    <circle cx="40" cy="60" r="5" fill="#4A6B32"/>
-                    <circle cx="55" cy="42" r="3" fill="#8FA862"/>
+                    <circle cx="25" cy="75" r="4" fill="#5c7844"/>
+                    <circle cx="40" cy="60" r="5" fill="#3b5228"/>
                 </svg>
             </div>
             <div class="absolute -bottom-6 -right-6 opacity-80 pointer-events-none select-none text-botanical-600 transform rotate-180">
                 <svg width="120" height="120" viewBox="0 0 100 100" fill="currentColor">
                     <path d="M10,90 Q30,40 80,10 Q50,50 10,90 Z" opacity="0.6"/>
                     <path d="M10,90 Q40,30 90,20 Q40,60 10,90 Z" opacity="0.3"/>
-                    <circle cx="25" cy="75" r="4" fill="#6B8E23"/>
-                    <circle cx="40" cy="60" r="5" fill="#4A6B32"/>
+                    <circle cx="25" cy="75" r="4" fill="#5c7844"/>
+                    <circle cx="40" cy="60" r="5" fill="#3b5228"/>
                 </svg>
             </div>
 
-            <!-- Top Header & Duck Mascot -->
-            <div class="flex flex-col md:flex-row items-center justify-center gap-2 mb-2">
-                <span class="text-4xl md:text-5xl text-botanical-darkGreen font-cursive tracking-wide">
-                   Arely's  
+            <!-- Title & Mascot Illustration Header -->
+            <div class="flex items-center justify-center gap-3">
+                <!-- Cute SVG Duck Mascot -->
+                <svg width="48" height="48" viewBox="0 0 64 64" fill="none" class="inline-block text-amber-500">
+                    <path d="M38 18C38 12.4772 33.5228 8 28 8C22.4772 8 18 12.4772 18 18C18 20.2 18.7 22.2 19.9 23.8C14.1 26.5 10 32.4 10 39.5C10 49.2 17.8 57 27.5 57C37.2 57 45 49.2 45 39.5C45 38.3 44.9 37.1 44.6 36C49.2 36 53 32.2 53 27.5C53 26.1 52.6 24.8 52 23.7C50.5 24.5 48.8 25 47 25C42 25 38 21 38 18Z" fill="#FBBF24"/>
+                    <circle cx="25" cy="16" r="2.5" fill="#1F2937"/>
+                    <path d="M36 20C38 20 44 20 46 17C44 23 38 23 36 23V20Z" fill="#F97316"/>
+                    <path d="M22 52C22 52 18 58 14 58H26C28 58 30 56 30 54V50" stroke="#78350F" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+                <span class="text-4xl md:text-6xl text-botanical-700 font-script tracking-wide">
+                    Arely Diaz Lujan
                 </span>
+                <svg width="48" height="48" viewBox="0 0 64 64" fill="none" class="inline-block text-amber-500 transform -scale-x-100">
+                    <path d="M38 18C38 12.4772 33.5228 8 28 8C22.4772 8 18 12.4772 18 18C18 20.2 18.7 22.2 19.9 23.8C14.1 26.5 10 32.4 10 39.5C10 49.2 17.8 57 27.5 57C37.2 57 45 49.2 45 39.5C45 38.3 44.9 37.1 44.6 36C49.2 36 53 27.5 53 27.5C53 26.1 52.6 24.8 52 23.7C50.5 24.5 48.8 25 47 25C42 25 38 21 38 18Z" fill="#FBBF24"/>
+                    <circle cx="25" cy="16" r="2.5" fill="#1F2937"/>
+                    <path d="M36 20C38 20 44 20 46 17C44 23 38 23 36 23V20Z" fill="#F97316"/>
+                </svg>
             </div>
 
-            <h1 class="text-3xl md:text-5xl font-header-script font-bold text-botanical-olive tracking-wide my-1">
+            <h1 class="text-3xl md:text-5xl font-headerScript font-bold text-botanical-500 tracking-wide my-1">
                 Baby Shower
             </h1>
             
@@ -155,114 +157,117 @@
             </p>
 
             <p class="max-w-md mx-auto text-xs md:text-sm text-gray-600 mt-2 font-serif leading-relaxed px-4">
-                Welcome to our memory gallery! Share your moments with us as we celebrate the new addition to the <strong class="text-botanical-darkGreen">Lujan+Diaz family</strong>.
+                Welcome to our live event photo hub! Capture and share your favorite moments with us as we celebrate the new addition to the <strong class="text-botanical-700">Lujan+Diaz family</strong>.
             </p>
 
             <!-- Event Details Pill Strip -->
-            <div class="mt-5 flex flex-wrap justify-center gap-3 text-xs md:text-sm text-botanical-darkGreen font-medium">
-                <div class="bg-botanical-50 border border-botanical-200 px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
+            <div class="mt-5 flex flex-wrap justify-center gap-2.5 text-xs md:text-sm text-botanical-800 font-medium">
+                <div class="bg-white/80 border border-botanical-200 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
                     <i class="fa-regular fa-calendar-check text-botanical-600"></i>
                     <span>October 25</span>
                 </div>
-                <div class="bg-botanical-50 border border-botanical-200 px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                <div class="bg-white/80 border border-botanical-200 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
                     <i class="fa-regular fa-clock text-botanical-600"></i>
                     <span>4:00 PM - 11:00 PM</span>
                 </div>
-                <div class="bg-botanical-50 border border-botanical-200 px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                <div class="bg-white/80 border border-botanical-200 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
                     <i class="fa-solid fa-location-dot text-botanical-600"></i>
                     <span>Sunset Park - Bristlecone Picnic Area</span>
                 </div>
             </div>
 
-            <!-- Top Action Buttons (QR Modal & Admin Toggle) -->
-            <div class="mt-6 flex justify-center items-center gap-3">
-                <button onclick="openQRModal()" class="inline-flex items-center gap-2 bg-botanical-darkGreen hover:bg-botanical-800 text-white text-xs md:text-sm font-medium py-2 px-4 rounded-full transition shadow-md hover:shadow-lg">
-                    <i class="fa-solid fa-qrcode"></i>
-                    <span>Show Event QR Code</span>
+            <!-- Action Buttons -->
+            <div class="mt-6 flex flex-wrap justify-center items-center gap-3">
+                <button onclick="openQRModal()" class="inline-flex items-center gap-2 bg-botanical-700 hover:bg-botanical-800 text-white text-xs md:text-sm font-medium py-2.5 px-5 rounded-full transition shadow-md hover:shadow-lg">
+                    <i class="fa-solid fa-qrcode text-amber-300"></i>
+                    <span>Table QR Stand</span>
                 </button>
 
-                <button id="adminPortalBtn" onclick="openAdminModal()" class="inline-flex items-center gap-2 bg-white border border-botanical-300 hover:bg-botanical-50 text-botanical-800 text-xs md:text-sm font-medium py-2 px-4 rounded-full transition shadow-sm">
+                <button id="adminPortalBtn" onclick="toggleAdminModal()" class="inline-flex items-center gap-2 bg-white border border-botanical-300 hover:bg-botanical-50 text-botanical-800 text-xs md:text-sm font-medium py-2.5 px-5 rounded-full transition shadow-sm">
                     <i class="fa-solid fa-user-shield text-botanical-600"></i>
-                    <span id="adminBtnLabel">Admin Mode</span>
+                    <span id="adminBtnLabel">Admin Access</span>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- Main Content Area -->
-    <main class="w-full max-w-5xl mx-auto px-4 py-4 flex-grow">
+    <main class="w-full max-w-5xl mx-auto px-4 py-4 flex-grow no-print">
         
-        <!-- Admin Bar Active Alert (Hidden by default) -->
-        <div id="adminModeBanner" class="hidden mb-6 bg-amber-50 border-2 border-amber-300 rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-3 text-amber-900 shadow-sm">
+        <!-- Admin Bar Active Banner -->
+        <div id="adminModeBanner" class="hidden mb-6 bg-amber-50 border-2 border-amber-300 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-amber-900 shadow-sm">
             <div class="flex items-center gap-3">
-                <div class="p-2 bg-amber-200 rounded-lg text-amber-800">
+                <div class="p-2.5 bg-amber-200 rounded-lg text-amber-800">
                     <i class="fa-solid fa-shield-halved text-xl"></i>
                 </div>
                 <div>
-                    <h3 class="font-bold text-sm md:text-base">Admin Moderation Mode Active</h3>
-                    <p class="text-xs text-amber-800">You can now delete photos from the live event feed and database.</p>
+                    <h3 class="font-bold text-sm md:text-base">Admin Moderation Active</h3>
+                    <p class="text-xs text-amber-800">Deleting a photo will remove it permanently from Firebase for all guests in real time.</p>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <span class="text-xs bg-amber-200 px-2.5 py-1 rounded-full font-semibold" id="adminPhotoCount">0 Photos stored</span>
-                <button onclick="logoutAdmin()" class="bg-amber-800 hover:bg-amber-900 text-white text-xs px-3 py-1.5 rounded-lg transition">
+            <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                <button onclick="logoutAdmin()" class="bg-amber-800 hover:bg-amber-900 text-white text-xs font-medium px-4 py-2 rounded-lg transition">
                     Exit Admin
                 </button>
             </div>
         </div>
 
-        <!-- Upload & Action Callout Card -->
+        <!-- Connection Status Banner -->
+        <div id="dbStatusIndicator" class="mb-4 text-xs flex items-center justify-between bg-botanical-100/70 border border-botanical-200 text-botanical-800 px-4 py-2 rounded-xl">
+            <span class="flex items-center gap-2">
+                <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                <span id="statusText">Connecting to Firebase cloud storage...</span>
+            </span>
+            <span id="storageTypeBadge" class="text-[10px] bg-white px-2 py-0.5 rounded-full border border-botanical-300">Firestore v10</span>
+        </div>
+
+        <!-- Upload Trigger Section -->
         <section class="bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-botanical-200 mb-8">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div class="text-center md:text-left">
-                    <h2 class="text-xl font-bold font-serif text-botanical-darkGreen flex items-center justify-center md:justify-start gap-2">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-center sm:text-left">
+                    <h2 class="text-xl font-bold font-serif text-botanical-700 flex items-center justify-center sm:justify-start gap-2">
                         <i class="fa-solid fa-camera-retro text-botanical-500"></i>
-                        Share Your Moments
+                        Share Your Photo
                     </h2>
-                    <p class="text-xs md:text-sm text-gray-500 mt-1">No account needed! Snap or select photos to share with Arely & family.</p>
+                    <p class="text-xs md:text-sm text-gray-500 mt-1">No login required! Snap or select a photo from your phone.</p>
                 </div>
-                <button onclick="openUploadModal()" class="w-full md:w-auto bg-gradient-to-r from-botanical-600 to-botanical-olive hover:from-botanical-700 hover:to-botanical-800 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                <button onclick="openUploadModal()" class="w-full sm:w-auto bg-gradient-to-r from-botanical-600 to-botanical-500 hover:from-botanical-700 hover:to-botanical-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
                     <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
                     <span>Upload Event Photo</span>
                 </button>
             </div>
         </section>
 
-        <!-- Gallery Header & Filters -->
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg md:text-xl font-serif font-bold text-botanical-darkGreen flex items-center gap-2">
-                <span>Event Memories</span>
+        <!-- Gallery Controls & Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+            <h3 class="text-lg md:text-xl font-serif font-bold text-botanical-700 flex items-center gap-2">
+                <span>Event Photo Feed</span>
                 <span id="galleryCountBadge" class="bg-botanical-100 text-botanical-800 text-xs font-sans px-2.5 py-0.5 rounded-full font-semibold">0</span>
             </h3>
-            <div class="text-xs text-gray-500 flex items-center gap-1.5">
-                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Live Feed</span>
+            
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                <label class="text-xs text-gray-500 font-medium">Sort:</label>
+                <select id="sortSelect" onchange="sortPhotos(this.value)" class="bg-white border border-gray-300 text-xs rounded-lg px-2.5 py-1.5 focus:ring-2 focus:ring-botanical-500 outline-none">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="liked">Most Liked</option>
+                </select>
             </div>
         </div>
 
         <!-- Gallery Grid Container -->
         <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <!-- Loading Skeleton Placeholder -->
-            <div class="bg-white rounded-xl p-3 border border-gray-100 animate-pulse space-y-3">
-                <div class="bg-gray-200 h-48 rounded-lg w-full"></div>
-                <div class="h-3 bg-gray-200 rounded w-3/4"></div>
-                <div class="h-3 bg-gray-200 rounded w-1/2"></div>
-            </div>
-            <div class="bg-white rounded-xl p-3 border border-gray-100 animate-pulse space-y-3 hidden sm:block">
-                <div class="bg-gray-200 h-48 rounded-lg w-full"></div>
-                <div class="h-3 bg-gray-200 rounded w-3/4"></div>
-                <div class="h-3 bg-gray-200 rounded w-1/2"></div>
-            </div>
+            <!-- Dynamically populated photo cards -->
         </div>
 
         <!-- Empty State View -->
-        <div id="emptyGalleryState" class="hidden text-center py-16 px-4 bg-white/60 rounded-2xl border border-dashed border-botanical-300 my-4">
+        <div id="emptyGalleryState" class="hidden text-center py-16 px-4 bg-white/70 rounded-2xl border border-dashed border-botanical-300 my-4">
             <div class="w-16 h-16 bg-botanical-100 text-botanical-600 rounded-full flex items-center justify-center mx-auto mb-3">
                 <i class="fa-solid fa-images text-2xl"></i>
             </div>
-            <h3 class="text-lg font-serif font-bold text-botanical-darkGreen">No photos yet!</h3>
-            <p class="text-xs md:text-sm text-gray-500 max-w-sm mx-auto mt-1 mb-4">Be the first guest to share a photo from Arely's Baby Shower!</p>
-            <button onclick="openUploadModal()" class="bg-botanical-600 text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-botanical-700 transition">
+            <h3 class="text-lg font-serif font-bold text-botanical-700">No photos shared yet!</h3>
+            <p class="text-xs md:text-sm text-gray-500 max-w-sm mx-auto mt-1 mb-4">Be the first guest to share a photo at Arely's Baby Shower!</p>
+            <button onclick="openUploadModal()" class="bg-botanical-600 text-white text-xs font-semibold px-5 py-2.5 rounded-lg hover:bg-botanical-700 transition">
                 Upload First Photo
             </button>
         </div>
@@ -270,39 +275,39 @@
     </main>
 
     <!-- Footer -->
-    <footer class="w-full bg-white border-t border-botanical-100 py-6 mt-12 text-center text-xs text-gray-500">
-        <div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-2">
+    <footer class="w-full bg-white border-t border-botanical-100 py-6 mt-12 text-center text-xs text-gray-500 no-print">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
             <p>Arely's Baby Shower &bull; October 25, Sunset Park</p>
             <p class="text-botanical-600 font-serif font-medium">Celebrating the Lujan+Diaz Family 💕</p>
         </div>
     </footer>
 
-    <!-- ================= MODALS ================= -->
+    <!-- ================= MODALS & OVERLAYS ================= -->
 
     <!-- 1. Upload Photo Modal -->
-    <div id="uploadModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity">
+    <div id="uploadModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity no-print">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative border border-botanical-200 max-h-[90vh] overflow-y-auto custom-scrollbar">
             <button onclick="closeUploadModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
-            <h3 class="text-xl font-serif font-bold text-botanical-darkGreen mb-1">
+            <h3 class="text-xl font-serif font-bold text-botanical-700 mb-1">
                 Upload Event Photo
             </h3>
-            <p class="text-xs text-gray-500 mb-4">Share your favorite snapshot from the celebration.</p>
+            <p class="text-xs text-gray-500 mb-4">Share a memory directly to the live shower feed.</p>
 
             <form id="photoUploadForm" onsubmit="handlePhotoUpload(event)" class="space-y-4">
                 
-                <!-- File Drop Area -->
+                <!-- File Input / Camera Capture -->
                 <div>
                     <label class="block text-xs font-semibold text-gray-700 mb-1">Select Photo *</label>
                     <div id="dropZone" onclick="document.getElementById('photoInput').click()" class="border-2 border-dashed border-botanical-300 rounded-xl p-6 text-center cursor-pointer hover:bg-botanical-50 transition relative group">
-                        <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="previewSelectedImage(event)" required>
+                        <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="previewAndCompressImage(event)" required>
                         
                         <div id="uploadPlaceholder" class="space-y-2">
                             <i class="fa-solid fa-cloud-arrow-up text-3xl text-botanical-500 group-hover:scale-110 transition-transform"></i>
-                            <p class="text-xs md:text-sm font-medium text-gray-700">Click or tap to upload photo</p>
-                            <p class="text-[10px] text-gray-400">Supports JPG, PNG, WEBP (Auto-optimized)</p>
+                            <p class="text-xs md:text-sm font-medium text-gray-700">Tap to select image or take photo</p>
+                            <p class="text-[10px] text-gray-400">Automatic HTML5 canvas compression applied</p>
                         </div>
 
                         <div id="imagePreviewContainer" class="hidden relative rounded-lg overflow-hidden max-h-64 mx-auto">
@@ -320,10 +325,10 @@
                     <input type="text" id="uploaderName" placeholder="e.g. Aunt Maria & Uncle Carlos" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-botanical-500 focus:border-botanical-500 outline-none">
                 </div>
 
-                <!-- Guest Message Note -->
+                <!-- Caption / Message -->
                 <div>
-                    <label for="uploaderMessage" class="block text-xs font-semibold text-gray-700 mb-1">Heartfelt Note / Caption (Optional)</label>
-                    <textarea id="uploaderMessage" rows="2" placeholder="Can't wait to meet baby! Best wishes to Arely!" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-botanical-500 focus:border-botanical-500 outline-none resize-none"></textarea>
+                    <label for="uploaderMessage" class="block text-xs font-semibold text-gray-700 mb-1">Note / Caption (Optional)</label>
+                    <textarea id="uploaderMessage" rows="2" placeholder="Can't wait to meet the new baby! Best wishes!" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-botanical-500 focus:border-botanical-500 outline-none resize-none"></textarea>
                 </div>
 
                 <!-- Submit Button -->
@@ -340,8 +345,8 @@
         </div>
     </div>
 
-    <!-- 2. Lightbox Photo View Modal -->
-    <div id="lightboxModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <!-- 2. Fullscreen Lightbox Photo Modal -->
+    <div id="lightboxModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 no-print">
         <div class="relative max-w-4xl w-full flex flex-col items-center justify-center max-h-[95vh]">
             <button onclick="closeLightbox()" class="absolute -top-10 right-0 text-white/80 hover:text-white text-2xl">
                 <i class="fa-solid fa-xmark"></i>
@@ -351,15 +356,19 @@
                 <img id="lightboxImg" src="" alt="Enlarged photo" class="max-h-[70vh] w-auto object-contain rounded-lg shadow-2xl">
             </div>
 
-            <!-- Lightbox Metadata Card -->
+            <!-- Lightbox Information Footer -->
             <div class="w-full max-w-xl bg-white/10 text-white backdrop-blur-md mt-3 p-4 rounded-xl flex items-center justify-between gap-4">
                 <div class="overflow-hidden">
-                    <h4 id="lightboxUploader" class="text-sm font-semibold truncate text-white">Anonymous Guest</h4>
+                    <h4 id="lightboxUploader" class="text-sm font-semibold truncate text-white">Guest</h4>
                     <p id="lightboxMessage" class="text-xs text-white/80 italic mt-0.5 line-clamp-2"></p>
                     <span id="lightboxTime" class="text-[10px] text-white/50 block mt-1"></span>
                 </div>
                 <div class="flex items-center gap-2 shrink-0">
-                    <button id="downloadPhotoBtn" onclick="downloadCurrentPhoto()" class="bg-white/20 hover:bg-white/30 text-white p-2 rounded-lg text-xs flex items-center gap-1.5 transition">
+                    <button id="likeLightboxBtn" onclick="toggleLikeFromLightbox()" class="bg-white/20 hover:bg-white/30 text-white p-2 rounded-lg text-xs flex items-center gap-1.5 transition">
+                        <i id="likeIcon" class="fa-regular fa-heart text-rose-400"></i>
+                        <span id="likeCountText">0</span>
+                    </button>
+                    <button onclick="downloadCurrentPhoto()" class="bg-white/20 hover:bg-white/30 text-white p-2 rounded-lg text-xs flex items-center gap-1.5 transition">
                         <i class="fa-solid fa-download"></i>
                         <span class="hidden sm:inline">Save</span>
                     </button>
@@ -372,33 +381,33 @@
         </div>
     </div>
 
-    <!-- 3. Event QR Code Modal -->
-    <div id="qrModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <!-- 3. Event QR Code & Printable Flyer Modal -->
+    <div id="qrModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 no-print">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl relative border border-botanical-200">
             <button onclick="closeQRModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
-            <h3 class="text-lg font-serif font-bold text-botanical-darkGreen mb-1">
-                Scan to Upload Photos
+            <h3 class="text-lg font-serif font-bold text-botanical-700 mb-1">
+                Scan to Share Photos
             </h3>
-            <p class="text-xs text-gray-500 mb-4">Display this QR code on event tables so guests can upload instantly!</p>
+            <p class="text-xs text-gray-500 mb-4">Scan with your phone camera to open the event photo hub!</p>
 
             <div class="p-4 bg-botanical-50 rounded-xl border border-botanical-200 inline-block mb-3 shadow-inner">
                 <div id="qrcodeCanvas" class="flex justify-center"></div>
             </div>
 
-            <p class="text-[11px] text-botanical-700 font-semibold mb-4">Arely's Baby Shower Photo Hub</p>
+            <p id="qrUrlDisplay" class="text-[10px] text-gray-400 truncate max-w-xs mx-auto mb-4"></p>
 
-            <button onclick="window.print()" class="w-full bg-botanical-darkGreen text-white text-xs font-semibold py-2.5 rounded-lg hover:bg-botanical-800 transition flex items-center justify-center gap-2">
+            <button onclick="window.print()" class="w-full bg-botanical-700 text-white text-xs font-semibold py-2.5 rounded-lg hover:bg-botanical-800 transition flex items-center justify-center gap-2">
                 <i class="fa-solid fa-print"></i>
-                <span>Print Table Sign</span>
+                <span>Print Table Stand Sign</span>
             </button>
         </div>
     </div>
 
-    <!-- 4. Admin Access Modal -->
-    <div id="adminModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <!-- 4. Admin Authentication Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 no-print">
         <div class="bg-white rounded-2xl max-w-xs w-full p-6 shadow-2xl relative border border-botanical-200">
             <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
                 <i class="fa-solid fa-xmark text-lg"></i>
@@ -408,198 +417,133 @@
                 <i class="fa-solid fa-lock text-xl"></i>
             </div>
 
-            <h3 class="text-lg font-serif font-bold text-center text-botanical-darkGreen mb-1">
+            <h3 class="text-lg font-serif font-bold text-center text-botanical-700 mb-1">
                 Admin Access
             </h3>
-            <p class="text-xs text-gray-500 text-center mb-4">Enter host PIN code to manage photo moderation.</p>
+            <p class="text-xs text-gray-500 text-center mb-4">Enter PIN to moderate or remove photos.</p>
 
             <form onsubmit="handleAdminLogin(event)" class="space-y-3">
-                <input type="password" id="adminPinInput" placeholder="Enter PIN (Default: 1234)" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-center text-sm font-bold tracking-widest outline-none focus:ring-2 focus:ring-botanical-500" required>
-                <div id="adminError" class="text-[11px] text-rose-600 text-center hidden">Incorrect PIN. Try default: 1234</div>
-                <button type="submit" class="w-full bg-botanical-darkGreen text-white text-xs font-semibold py-2.5 rounded-lg hover:bg-botanical-800 transition">
-                    Unlock Admin Panel
+                <input type="password" id="adminPinInput" placeholder="Passcode (Default: 2026)" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-center text-sm font-bold tracking-widest outline-none focus:ring-2 focus:ring-botanical-500" required>
+                <div id="adminError" class="text-[11px] text-rose-600 text-center hidden">Incorrect passcode. Try 2026</div>
+                <button type="submit" class="w-full bg-botanical-700 text-white text-xs font-semibold py-2.5 rounded-lg hover:bg-botanical-800 transition">
+                    Unlock Admin Mode
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- Notification Toast Container -->
-    <div id="toast" class="fixed bottom-4 right-4 z-50 bg-gray-900 text-white text-xs px-4 py-3 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2 pointer-events-none">
-        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
-        <span id="toastMessage">Action completed successfully</span>
+    <!-- PRINTABLE TABLE FLYER TEMPLATE -->
+    <div id="printableFlyerSection" class="hidden">
+        <div class="botanical-card max-w-xl w-full p-10 text-center rounded-3xl relative border-4 border-[#9a8b4f]">
+            <h1 class="text-5xl font-script text-botanical-700 mb-2">Arely's Baby Shower</h1>
+            <h2 class="text-2xl font-serif text-botanical-500 font-semibold mb-4">Share Your Event Photos!</h2>
+            <p class="text-sm text-gray-600 mb-6 font-serif">Scan the QR code below with your camera to upload your photos directly to our shared live memory hub!</p>
+            
+            <div id="printableQrCodeContainer" class="p-6 bg-botanical-50 rounded-2xl border-2 border-botanical-200 inline-block mb-6"></div>
+
+            <p class="text-sm font-semibold text-botanical-700">No Sign-In Required &bull; October 25th</p>
+            <p class="text-xs text-gray-500 mt-2 font-serif">Celebrating with the Lujan+Diaz family!</p>
+        </div>
     </div>
 
-    <!-- Firebase Modular Setup Script -->
+    <!-- Toast Notification Container -->
+    <div id="toast" class="fixed bottom-4 right-4 z-50 bg-gray-900 text-white text-xs px-4 py-3 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2 pointer-events-none no-print">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toastMessage">Action completed</span>
+    </div>
+
+    <!-- Firebase v10 SDK Modules -->
     <script type="module">
-        import { initializeApp } from "firebase/app";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "firebase/app";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
             getFirestore, 
             collection, 
-            doc, 
             addDoc, 
             deleteDoc, 
+            doc, 
+            updateDoc, 
             onSnapshot, 
-            serverTimestamp 
-        } from "firebase/app";
+            query, 
+            orderBy, 
+            increment 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Firebase Configuration setup
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'arelys-baby-shower';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : {
-                  apiKey: "AIzaSyCiAHuTdJdPAHsi3pdotVw5OBDJen58NqM",
-                  authDomain: "diaz-lujan-baby-shower.firebaseapp.com",
-                  projectId: "diaz-lujan-baby-shower",
-                  storageBucket: "diaz-lujan-baby-shower.firebasestorage.app",
-                  messagingSenderId: "296397407816",
-                  appId: "1:296397407816:web:022998b9cbab603a7d7a7d"
-            };
+        // Your Exact Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCiAHuTdJdPAHsi3pdotVw5OBDJen58NqM",
+            authDomain: "diaz-lujan-baby-shower.firebaseapp.com",
+            projectId: "diaz-lujan-baby-shower",
+            storageBucket: "diaz-lujan-baby-shower.firebasestorage.app",
+            messagingSenderId: "296397407816",
+            appId: "1:296397407816:web:022998b9cbab603a7d7a7d"
+        };
 
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        let db = null;
+        let photosCollection = null;
+        let isFirebaseConnected = false;
 
-        // App Global State
-        let currentUser = null;
-        let photosList = [];
-        let isAdminLoggedIn = false;
-        let currentActiveLightboxPhoto = null;
-        let selectedBase64Image = null;
-
-        // Firestore Path for Public Photos Collection
-        const photosCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'photos');
-
-        // Initialize Authentication
-        async function initAuth() {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (err) {
-                console.warn("Auth initial state fallback:", err);
-            }
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            photosCollection = collection(db, "event_photos");
+            isFirebaseConnected = true;
+            updateStatusIndicator(true, "Connected to Firebase Cloud Sync");
+        } catch (err) {
+            console.warn("Firebase initialization failed, operating in offline/IndexedDB mode:", err);
+            updateStatusIndicator(false, "Offline Mode (Local Storage)");
         }
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUser = user;
-                subscribeToPhotos();
-            }
-        });
+        // Global State variables
+        window.photosList = [];
+        window.isAdminLoggedIn = false;
+        window.currentActiveLightboxPhoto = null;
+        window.selectedBase64Image = null;
 
-        // Real-time Firestore Listener
-        function subscribeToPhotos() {
-            if (!currentUser) return;
-
-            onSnapshot(photosCollectionRef, (snapshot) => {
-                const photos = [];
+        // Subscribe to Firestore Real-Time Snapshot
+        if (isFirebaseConnected) {
+            const photosQuery = query(photosCollection, orderBy("timestamp", "desc"));
+            
+            onSnapshot(photosQuery, (snapshot) => {
+                const livePhotos = [];
                 snapshot.forEach((doc) => {
-                    photos.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
+                    livePhotos.push({ id: doc.id, ...doc.data() });
                 });
-
-                // Client-side sort by timestamp descending (newest first)
-                photos.sort((a, b) => {
-                    const timeA = a.createdAt?.seconds || Date.now() / 1000;
-                    const timeB = b.createdAt?.seconds || Date.now() / 1000;
-                    return timeB - timeA;
-                });
-
-                photosList = photos;
+                window.photosList = livePhotos;
                 renderGallery();
-                updateStats();
             }, (error) => {
-                console.error("Error fetching photos snapshot:", error);
-                showToast("Connection update error", "error");
+                console.warn("Firestore snapshot error, falling back to local:", error);
+                loadFromIndexedDB();
             });
+        } else {
+            loadFromIndexedDB();
         }
 
-        // Render Gallery UI
-        function renderGallery() {
-            const container = document.getElementById('galleryContainer');
-            const emptyState = document.getElementById('emptyGalleryState');
-            const countBadge = document.getElementById('galleryCountBadge');
-
-            countBadge.innerText = photosList.length;
-
-            if (photosList.length === 0) {
-                container.innerHTML = '';
-                emptyState.classList.remove('hidden');
-                return;
-            }
-
-            emptyState.classList.add('hidden');
-            container.innerHTML = '';
-
-            photosList.forEach((photo) => {
-                const card = document.createElement('div');
-                card.className = 'photo-card bg-white rounded-xl overflow-hidden shadow-sm border border-botanical-200 flex flex-col justify-between group';
-
-                const formattedDate = photo.createdAt?.seconds 
-                    ? new Date(photo.createdAt.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                    : 'Just now';
-
-                const uploader = photo.uploaderName || 'Guest';
-                const message = photo.message || '';
-
-                card.innerHTML = `
-                    <div class="relative overflow-hidden bg-gray-100 cursor-pointer" onclick="openLightbox('${photo.id}')">
-                        <img src="${photo.imageUrl}" alt="Event Photo" class="w-full h-52 object-cover group-hover:scale-105 transition duration-500" loading="lazy">
-                        ${isAdminLoggedIn ? `
-                            <button onclick="deletePhotoFromDb(event, '${photo.id}')" class="absolute top-2 right-2 bg-rose-600 hover:bg-rose-700 text-white p-2 rounded-full shadow-md text-xs transition transform hover:scale-110" title="Delete from Database">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        ` : ''}
-                    </div>
-                    <div class="p-3 flex flex-col flex-grow justify-between bg-white">
-                        <div>
-                            <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
-                                <span class="font-semibold text-botanical-darkGreen flex items-center gap-1">
-                                    <i class="fa-regular fa-circle-user text-botanical-500"></i> ${escapeHtml(uploader)}
-                                </span>
-                                <span class="text-[10px] text-gray-400">${formattedDate}</span>
-                            </div>
-                            ${message ? `<p class="text-xs text-gray-600 italic line-clamp-2 mt-1">"${escapeHtml(message)}"</p>` : ''}
-                        </div>
-                    </div>
-                `;
-
-                container.appendChild(card);
-            });
-        }
-
-        // Update Admin stats
-        function updateStats() {
-            const adminCount = document.getElementById('adminPhotoCount');
-            if (adminCount) {
-                adminCount.innerText = `${photosList.length} Photos in Live DB`;
+        function updateStatusIndicator(connected, message) {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            if (dot && text) {
+                text.innerText = message;
+                if (connected) {
+                    dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
+                } else {
+                    dot.className = "w-2.5 h-2.5 rounded-full bg-amber-500";
+                }
             }
         }
 
-        // Handle Image File Selection & Client-Side Compression to Base64
-        window.previewSelectedImage = function(event) {
+        // HTML5 CANVAS IMAGE COMPRESSION
+        window.previewAndCompressImage = function(event) {
             const file = event.target.files[0];
             if (!file) return;
-
-            if (file.size > 10 * 1024 * 1024) {
-                showToast("File size too large (Max 10MB)", "error");
-                return;
-            }
 
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
-                    // Compress image to optimized size for Firestore document payload
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 1200;
-                    const MAX_HEIGHT = 1200;
+                    const MAX_WIDTH = 1000;
+                    const MAX_HEIGHT = 1000;
                     let width = img.width;
                     let height = img.height;
 
@@ -620,10 +564,9 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    // Convert to webp/jpeg base64
-                    selectedBase64Image = canvas.toDataURL('image/jpeg', 0.82);
-
-                    document.getElementById('imagePreview').src = selectedBase64Image;
+                    // Compress to JPEG at 0.75 quality (~150KB-250KB)
+                    window.selectedBase64Image = canvas.toDataURL('image/jpeg', 0.75);
+                    document.getElementById('imagePreview').src = window.selectedBase64Image;
                     document.getElementById('uploadPlaceholder').classList.add('hidden');
                     document.getElementById('imagePreviewContainer').classList.remove('hidden');
                 };
@@ -632,56 +575,55 @@
             reader.readAsDataURL(file);
         };
 
-        window.resetImageSelection = function(e) {
-            if (e) e.stopPropagation();
-            document.getElementById('photoInput').value = '';
-            selectedBase64Image = null;
-            document.getElementById('uploadPlaceholder').classList.remove('hidden');
-            document.getElementById('imagePreviewContainer').classList.add('hidden');
-        };
-
-        // Handle Photo Upload Form Submission
-        window.handlePhotoUpload = async function(event) {
-            event.preventDefault();
-
-            if (!selectedBase64Image) {
+        // UPLOAD PHOTO
+        window.handlePhotoUpload = async function(e) {
+            e.preventDefault();
+            if (!window.selectedBase64Image) {
                 showToast("Please select a photo first!", "error");
                 return;
             }
 
-            if (!currentUser) {
-                showToast("Connecting to service, please retry...", "error");
-                await initAuth();
-            }
-
-            const nameInput = document.getElementById('uploaderName').value.trim();
-            const messageInput = document.getElementById('uploaderMessage').value.trim();
             const submitBtn = document.getElementById('submitPhotoBtn');
             const spinner = document.getElementById('uploadSpinner');
             const btnText = document.getElementById('uploadBtnText');
 
+            submitBtn.disabled = true;
+            spinner.classList.remove('hidden');
+            btnText.innerText = "Uploading...";
+
+            const photoData = {
+                imageUrl: window.selectedBase64Image,
+                uploaderName: document.getElementById('uploaderName').value.trim() || 'Guest',
+                message: document.getElementById('uploaderMessage').value.trim() || '',
+                timestamp: Date.now(),
+                likes: 0
+            };
+
             try {
-                submitBtn.disabled = true;
-                spinner.classList.remove('hidden');
-                btnText.innerText = "Posting...";
+                if (isFirebaseConnected && db) {
+                    await addDoc(collection(db, "event_photos"), photoData);
+                } else {
+                    photoData.id = 'photo_' + Date.now();
+                    window.photosList.unshift(photoData);
+                    saveToIndexedDB(photoData);
+                    renderGallery();
+                }
 
-                // Save doc to Firestore database
-                await addDoc(photosCollectionRef, {
-                    imageUrl: selectedBase64Image,
-                    uploaderName: nameInput || 'Guest',
-                    message: messageInput || '',
-                    uploaderUid: currentUser?.uid || 'anonymous',
-                    createdAt: serverTimestamp()
-                });
-
-                showToast("Photo added to event gallery! ✨", "success");
                 closeUploadModal();
                 resetImageSelection();
                 document.getElementById('photoUploadForm').reset();
 
+                // Trigger celebratory confetti
+                confetti({
+                    particleCount: 60,
+                    spread: 70,
+                    origin: { y: 0.7 }
+                });
+
+                showToast("Photo uploaded successfully! 🎉", "success");
             } catch (error) {
-                console.error("Error uploading photo to Firestore:", error);
-                showToast("Failed to upload. Please try again.", "error");
+                console.error("Upload error:", error);
+                showToast("Upload failed. Please try again.", "error");
             } finally {
                 submitBtn.disabled = false;
                 spinner.classList.add('hidden');
@@ -689,168 +631,287 @@
             }
         };
 
-        // Delete Photo from Firestore Database (Admin functionality)
-        window.deletePhotoFromDb = async function(event, photoId) {
+        // DELETE PHOTO (ADMIN MODE)
+        window.deleteSinglePhoto = async function(event, photoId) {
             if (event) event.stopPropagation();
-
-            if (!isAdminLoggedIn) {
-                showToast("Admin authorization required", "error");
-                return;
-            }
-
-            if (!confirm("Are you sure you want to permanently delete this photo from the event database?")) {
-                return;
-            }
+            if (!confirm("Are you sure you want to delete this photo from the event database?")) return;
 
             try {
-                const photoDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'photos', photoId);
-                await deleteDoc(photoDocRef);
-                showToast("Photo deleted from database", "success");
-                
-                if (currentActiveLightboxPhoto?.id === photoId) {
-                    closeLightbox();
+                if (isFirebaseConnected && db) {
+                    await deleteDoc(doc(db, "event_photos", photoId));
+                } else {
+                    window.photosList = window.photosList.filter(p => p.id !== photoId);
+                    renderGallery();
                 }
+                showToast("Photo permanently removed", "info");
             } catch (err) {
-                console.error("Error deleting photo:", err);
+                console.error("Delete error:", err);
                 showToast("Failed to delete photo", "error");
             }
         };
 
-        // Modal Controls & Lightbox
-        window.openUploadModal = function() {
-            document.getElementById('uploadModal').classList.remove('hidden');
-        };
-
-        window.closeUploadModal = function() {
-            document.getElementById('uploadModal').classList.add('hidden');
-        };
-
-        window.openLightbox = function(photoId) {
-            const photo = photosList.find(p => p.id === photoId);
-            if (!photo) return;
-
-            currentActiveLightboxPhoto = photo;
-            document.getElementById('lightboxImg').src = photo.imageUrl;
-            document.getElementById('lightboxUploader').innerText = photo.uploaderName || 'Guest';
-            document.getElementById('lightboxMessage').innerText = photo.message ? `"${photo.message}"` : 'No note provided';
+        // LIKE PHOTO
+        window.toggleLike = async function(event, photoId) {
+            if (event) event.stopPropagation();
             
-            const formattedDate = photo.createdAt?.seconds 
-                ? new Date(photo.createdAt.seconds * 1000).toLocaleString() 
-                : 'Recent Upload';
-            document.getElementById('lightboxTime').innerText = formattedDate;
-
-            const adminDelBtn = document.getElementById('adminDeleteLightBoxBtn');
-            if (isAdminLoggedIn) {
-                adminDelBtn.classList.remove('hidden');
-                adminDelBtn.classList.add('flex');
-            } else {
-                adminDelBtn.classList.add('hidden');
-                adminDelBtn.classList.remove('flex');
-            }
-
-            document.getElementById('lightboxModal').classList.remove('hidden');
-        };
-
-        window.closeLightbox = function() {
-            document.getElementById('lightboxModal').classList.add('hidden');
-            currentActiveLightboxPhoto = null;
-        };
-
-        window.deleteFromLightbox = function() {
-            if (currentActiveLightboxPhoto) {
-                deletePhotoFromDb(null, currentActiveLightboxPhoto.id);
+            try {
+                if (isFirebaseConnected && db) {
+                    const photoRef = doc(db, "event_photos", photoId);
+                    await updateDoc(photoRef, {
+                        likes: increment(1)
+                    });
+                } else {
+                    const photo = window.photosList.find(p => p.id === photoId);
+                    if (photo) {
+                        photo.likes = (photo.likes || 0) + 1;
+                        renderGallery();
+                    }
+                }
+            } catch (err) {
+                console.error("Like error:", err);
             }
         };
 
-        window.downloadCurrentPhoto = function() {
-            if (!currentActiveLightboxPhoto) return;
-            const a = document.createElement('a');
-            a.href = currentActiveLightboxPhoto.imageUrl;
-            a.download = `arely-babyshower-${Date.now()}.jpg`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        };
+        // INDEXEDDB OFFLINE FALLBACK ENGINE
+        function saveToIndexedDB(photoObj) {
+            try {
+                const stored = localStorage.getItem('arely_photos_backup');
+                const list = stored ? JSON.parse(stored) : [];
+                list.unshift(photoObj);
+                localStorage.setItem('arely_photos_backup', JSON.stringify(list));
+            } catch(e){}
+        }
 
-        // QR Code Modal & Generator
-        let qrcodeInstance = null;
-        window.openQRModal = function() {
-            const modal = document.getElementById('qrModal');
-            modal.classList.remove('hidden');
+        function loadFromIndexedDB() {
+            try {
+                const stored = localStorage.getItem('arely_photos_backup');
+                window.photosList = stored ? JSON.parse(stored) : [];
+                renderGallery();
+            } catch(e){
+                window.photosList = [];
+            }
+        }
+    </script>
 
-            const canvasContainer = document.getElementById('qrcodeCanvas');
-            canvasContainer.innerHTML = '';
+    <script>
+        // GALLERY RENDERER
+        function renderGallery() {
+            const container = document.getElementById('galleryContainer');
+            const emptyState = document.getElementById('emptyGalleryState');
+            const countBadge = document.getElementById('galleryCountBadge');
 
-            const eventUrl = window.location.href;
-            qrcodeInstance = new QRCode(canvasContainer, {
-                text: eventUrl,
-                width: 180,
-                height: 180,
-                colorDark: "#2D4A1E",
-                colorLight: "#FFFFFF",
-                correctLevel: QRCode.CorrectLevel.H
-            });
-        };
+            const photos = window.photosList || [];
+            countBadge.innerText = photos.length;
 
-        window.closeQRModal = function() {
-            document.getElementById('qrModal').classList.add('hidden');
-        };
-
-        // Admin Access Logic
-        window.openAdminModal = function() {
-            if (isAdminLoggedIn) {
-                logoutAdmin();
+            if (photos.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
                 return;
             }
-            document.getElementById('adminModal').classList.remove('hidden');
+
+            emptyState.classList.add('hidden');
+            container.innerHTML = '';
+
+            photos.forEach((photo) => {
+                const card = document.createElement('div');
+                card.className = 'photo-card bg-white rounded-2xl overflow-hidden shadow-sm border border-botanical-200 flex flex-col justify-between relative group';
+
+                const formattedTime = photo.timestamp 
+                    ? new Date(photo.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    : 'Just now';
+
+                card.innerHTML = `
+                    <div class="relative overflow-hidden bg-gray-100 cursor-pointer" onclick="openLightbox('${photo.id}')">
+                        <img src="${photo.imageUrl}" alt="Event photo" class="w-full h-52 object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+                        
+                        ${window.isAdminLoggedIn ? `
+                            <button onclick="deleteSinglePhoto(event, '${photo.id}')" class="absolute top-2 right-2 bg-rose-600 hover:bg-rose-700 text-white p-2 rounded-full shadow-md text-xs transition transform hover:scale-110" title="Delete Photo">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                    <div class="p-3.5 flex flex-col flex-grow justify-between bg-white">
+                        <div>
+                            <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
+                                <span class="font-semibold text-botanical-700 flex items-center gap-1">
+                                    <i class="fa-regular fa-circle-user text-botanical-500"></i> ${escapeHtml(photo.uploaderName || 'Guest')}
+                                </span>
+                                <span class="text-[10px] text-gray-400">${formattedTime}</span>
+                            </div>
+                            ${photo.message ? `<p class="text-xs text-gray-600 italic line-clamp-2 mt-1">"${escapeHtml(photo.message)}"</p>` : ''}
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
+                            <button onclick="toggleLike(event, '${photo.id}')" class="flex items-center gap-1.5 text-gray-500 hover:text-rose-500 transition">
+                                <i class="${photo.likes > 0 ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart"></i>
+                                <span>${photo.likes || 0}</span>
+                            </button>
+                            <span class="text-[10px] text-botanical-600 font-medium">Arely's Shower</span>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // RESET IMAGE SELECTION
+        window.resetImageSelection = function(e) {
+            if (e) e.stopPropagation();
+            document.getElementById('photoInput').value = '';
+            window.selectedBase64Image = null;
+            document.getElementById('uploadPlaceholder').classList.remove('hidden');
+            document.getElementById('imagePreviewContainer').classList.add('hidden');
         };
 
-        window.closeAdminModal = function() {
-            document.getElementById('adminModal').classList.add('hidden');
-            document.getElementById('adminError').classList.add('hidden');
+        // SORTING ENGINE
+        window.sortPhotos = function(criteria) {
+            if (!window.photosList) return;
+            if (criteria === 'newest') {
+                window.photosList.sort((a, b) => b.timestamp - a.timestamp);
+            } else if (criteria === 'oldest') {
+                window.photosList.sort((a, b) => a.timestamp - b.timestamp);
+            } else if (criteria === 'liked') {
+                window.photosList.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+            }
+            renderGallery();
         };
 
+        // ADMIN MODERATION CONTROLS
         window.handleAdminLogin = function(e) {
             e.preventDefault();
-            const pin = document.getElementById('adminPinInput').value;
-
-            // Default Admin PIN: 1234
-            if (pin === '1234' || pin === 'admin') {
-                isAdminLoggedIn = true;
+            const pin = document.getElementById('adminPinInput').value.trim();
+            if (pin === '2026' || pin === 'arely2026') {
+                window.isAdminLoggedIn = true;
                 document.getElementById('adminModeBanner').classList.remove('hidden');
-                document.getElementById('adminBtnLabel').innerText = "Logout Admin";
-                document.getElementById('adminPinInput').value = '';
+                document.getElementById('adminBtnLabel').innerText = "Exit Admin";
                 closeAdminModal();
                 renderGallery();
-                showToast("Logged in as Admin", "success");
+                showToast("Admin Moderation Unlocked", "success");
             } else {
                 document.getElementById('adminError').classList.remove('hidden');
             }
         };
 
         window.logoutAdmin = function() {
-            isAdminLoggedIn = false;
+            window.isAdminLoggedIn = false;
             document.getElementById('adminModeBanner').classList.add('hidden');
-            document.getElementById('adminBtnLabel').innerText = "Admin Mode";
+            document.getElementById('adminBtnLabel').innerText = "Admin Access";
             renderGallery();
             showToast("Exited Admin Mode", "info");
         };
 
-        // Utility: Toast Messages
+        // LIGHTBOX CONTROLS
+        window.openLightbox = function(photoId) {
+            const photo = window.photosList.find(p => p.id === photoId);
+            if (!photo) return;
+
+            window.currentActiveLightboxPhoto = photo;
+            document.getElementById('lightboxImg').src = photo.imageUrl;
+            document.getElementById('lightboxUploader').innerText = photo.uploaderName || 'Guest';
+            document.getElementById('lightboxMessage').innerText = photo.message ? `"${photo.message}"` : 'No note provided';
+            document.getElementById('lightboxTime').innerText = new Date(photo.timestamp).toLocaleString();
+            document.getElementById('likeCountText').innerText = photo.likes || 0;
+
+            const adminDelBtn = document.getElementById('adminDeleteLightBoxBtn');
+            if (window.isAdminLoggedIn) {
+                adminDelBtn.classList.remove('hidden');
+                adminDelBtn.classList.add('flex');
+            } else {
+                adminDelBtn.classList.add('hidden');
+            }
+
+            document.getElementById('lightboxModal').classList.remove('hidden');
+        };
+
+        window.closeLightbox = () => {
+            document.getElementById('lightboxModal').classList.add('hidden');
+            window.currentActiveLightboxPhoto = null;
+        };
+
+        window.toggleLikeFromLightbox = function() {
+            if (window.currentActiveLightboxPhoto) {
+                window.toggleLike(null, window.currentActiveLightboxPhoto.id);
+            }
+        };
+
+        window.deleteFromLightbox = function() {
+            if (window.currentActiveLightboxPhoto) {
+                window.deleteSinglePhoto(null, window.currentActiveLightboxPhoto.id);
+                closeLightbox();
+            }
+        };
+
+        window.downloadCurrentPhoto = function() {
+            if (!window.currentActiveLightboxPhoto) return;
+            const a = document.createElement('a');
+            a.href = window.currentActiveLightboxPhoto.imageUrl;
+            a.download = `arely-baby-shower-${Date.now()}.jpg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
+
+        // MODAL CONTROLS
+        window.openUploadModal = () => document.getElementById('uploadModal').classList.remove('hidden');
+        window.closeUploadModal = () => document.getElementById('uploadModal').classList.add('hidden');
+
+        window.toggleAdminModal = () => {
+            if (window.isAdminLoggedIn) {
+                logoutAdmin();
+            } else {
+                document.getElementById('adminModal').classList.remove('hidden');
+            }
+        };
+        window.closeAdminModal = () => {
+            document.getElementById('adminModal').classList.add('hidden');
+            document.getElementById('adminError').classList.add('hidden');
+        };
+
+        // QR CODE & PRINTABLE FLYER GENERATOR
+        window.openQRModal = function() {
+            document.getElementById('qrModal').classList.remove('hidden');
+            const currentUrl = window.location.href;
+            document.getElementById('qrUrlDisplay').innerText = currentUrl;
+
+            // Generate Modal QR Code
+            const qrContainer = document.getElementById('qrcodeCanvas');
+            qrContainer.innerHTML = '';
+            new QRCode(qrContainer, {
+                text: currentUrl,
+                width: 180,
+                height: 180,
+                colorDark: "#3b5228",
+                colorLight: "#FFFFFF",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Generate Printable Table Card QR Code
+            const printableQrContainer = document.getElementById('printableQrCodeContainer');
+            printableQrContainer.innerHTML = '';
+            new QRCode(printableQrContainer, {
+                text: currentUrl,
+                width: 220,
+                height: 220,
+                colorDark: "#3b5228",
+                colorLight: "#FFFFFF",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        };
+
+        window.closeQRModal = () => document.getElementById('qrModal').classList.add('hidden');
+
+        // TOAST NOTIFICATIONS
         function showToast(message, type = "success") {
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
             const toastIcon = document.getElementById('toastIcon');
 
             toastMessage.innerText = message;
-
-            if (type === "error") {
-                toastIcon.className = "fa-solid fa-circle-exclamation text-rose-400 text-base";
-            } else if (type === "info") {
-                toastIcon.className = "fa-solid fa-circle-info text-blue-400 text-base";
-            } else {
-                toastIcon.className = "fa-solid fa-circle-check text-emerald-400 text-base";
-            }
+            toastIcon.className = type === "error" 
+                ? "fa-solid fa-circle-exclamation text-rose-400 text-base"
+                : type === "info"
+                ? "fa-solid fa-circle-info text-blue-400 text-base"
+                : "fa-solid fa-circle-check text-emerald-400 text-base";
 
             toast.classList.remove('translate-y-20', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
@@ -869,10 +930,6 @@
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
         }
-
-        // Initialize Application
-        initAuth();
-
     </script>
 </body>
 </html>
