@@ -431,8 +431,8 @@
 
     <!-- Firebase Modular Setup Script -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { initializeApp } from "firebase/app";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "firebase/app";
         import { 
             getFirestore, 
             collection, 
@@ -441,7 +441,7 @@
             deleteDoc, 
             onSnapshot, 
             serverTimestamp 
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        } from "firebase/app";
 
         // Firebase Configuration setup
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'arelys-baby-shower';
